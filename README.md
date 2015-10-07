@@ -9,3 +9,5 @@ For button 2 :
 2 Clicks in quick succession - b
 3 Clicks in quick succession - c
 1 Long Click (2 Seconds minimum) - 2
+
+Demo in JSFiddle - https://jsfiddle.net/induprakash/m6u2punf/
