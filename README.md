@@ -8,5 +8,4 @@ For button 2 :
 1 Click - a
 2 Clicks in quick succession - b
 3 Clicks in quick succession - c
-4 Clicks in quick succession - d
 1 Long Click (2 Seconds minimum) - 2
