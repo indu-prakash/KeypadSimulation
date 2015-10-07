@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Phone Kepypad">
+    <meta name="author" content="Indu Prakash">
+    <title>PHone Keypad Simulation</title>
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
+<body>
+<table id="phone">
+    <tr>
+        <td colspan="3">
+            <input type="text" id="result" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button data-value="1" class="key">1
+                <span>. , !</span>
+            </button>
+        </td>
+        <td>
+            <button data-value="2" class="key">2
+                <span>a b c</span>
+            </button>
+        </td>
+        <td>
+            <button data-value="3" class="key">3
+                <span>d e f</span>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button data-value="4" class="key">4
+                <span>g h i</span>
+            </button>
+        </td>
+        <td>
+            <button data-value="5" class="key">5
+                <span>j k l</span>
+            </button>
+        </td>
+        <td>
+            <button data-value="6" class="key">6
+                <span>m n o</span>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td><button data-value="7" class="key">7
+            <span>p q r s</span>
+            </button>
+        </td>
+        <td>
+            <button data-value="8" class="key">8
+                <span>t u v</span>
+            </button>
+        </td>
+        <td>
+            <button data-value="9" class="key">9
+                <span>w x y z</span>
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td><button data-value="*" class="key">*</button></td>
+        <td><button data-value="0" class="key">0</button></td>
+        <td><button data-value="#" class="key">#</button></td>
+    </tr>
+</table>
+
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+    $("#phone").find("button").mouseup(function(event){
+        resettimer = new Date().getTime();
+        var button_pressed = $(event.currentTarget).data("value");
+        if ( new Date().getTime() >= ( start + longpress )  ) {
+            $("#result").val(tlong($("#result").val(),button_pressed));
+        } else {
+        $("#result").val(t9($("#result").val(),button_pressed));
+        }
+   })
+    var longpress = 2000;
+    // holds the start time
+    var start;
+    
+    var resettimer;
+    var resettime = 1500;
+
+    $("#phone").find("button").on( 'mousedown', function( e ) {
+        start = new Date().getTime();
+        if(new Date().getTime() >= ( resettimer + resettime )){
+            keycount1 = 0;
+            keycount2 = 0;
+            keycode = '';
+        }
+    } );
+
+    $("#phone").find("button").on( 'mouseleave', function( e ) {
+        start = 0;
+    } );
+})
+var keycount1 = 0;// To store the number of keypress on each key. For example on key number 2, after 3 clicks, the output should reset to a.
+var keycount2 = 0;
+var keycode = ''; //To store the current character on the screen
+function t9(text,button_pressed){
+    var val = button_pressed; 
+    //alert(keycount1)
+    if((val == '7')||(val == '9')){ // in 7 and 9 , 4 albhabets are there, so seperated these two from others.
+        var spantext4 = $('.key[data-value="'+val+'"] span').html(); // to get the alphabets inside each button. Insite the button the alphabets are in span tag
+        var values4 = spantext4.split(' ');   // split these alphabets and store in an array called vallue4 
+        if(jQuery.inArray(keycode,values4) == -1){ // checking if the keycode is present in the array. returns -1 if value is not in array
+            keycount1 = 0; // if the value is not in array it means that the user clicked on a new button. sp we can reset the keypress counter.
+        } else {
+            text = text.slice(0,-1); // if the value is in the array, we delete the last character on the screen so that it can be replaced with the next character in that button.
+        }
+        keycode =  values4[keycount1]; //if keycount1 = 0, keycode will be 0th element in array value4
+        if(keycount1 < 3){
+            keycount1 = keycount1 + 1;
+        } else {
+            keycount1 = 0; //after 4 clicks reset the counter
+        }
+    } else if((val == '*')||(val == '0')||(val == '#')){
+        keycode = val; // For these three keys value and the key is the same. So return the same value
+    } else {
+        var spantext3 = $('.key[data-value="'+val+'"] span').html(); //Get the value inside the button
+        //alert(spantext);
+        var values3 = spantext3.split(' '); //Split to array
+        if(jQuery.inArray(keycode,values3) == -1){
+            keycount2 = 0;
+        }else {
+             text = text.slice(0,-1);
+        }
+         keycode = values3[keycount2];
+        //alert(values3[0]);
+        if(keycount2 < 2){
+          keycount2 = keycount2 + 1;
+        } else {
+            keycount2 = 0;
+        }
+    }
+    text = text + keycode;
+    return text;
+}
+function tlong(text,button_pressed){
+    var val = button_pressed; //For long press return the number and reset all counters.
+
+    keycode = val;
+    keycount1 = 0;
+    keycount2 = 0;
+    text = text + val;
+    return text;
+}
+    </script>
+</body>
